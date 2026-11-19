@@ -100,7 +100,8 @@ export function apply(appRoot, dict, { backup } = {}) {
 
     if (backup) backup(rel);
     try {
-      fs.writeFileSync(file, text, 'utf8');
+      // 用二进制安全的写法避免 Windows 换行转换（包内文件是 LF）
+      fs.writeFileSync(file, text, { encoding: 'utf8' });
       if (!syntaxOk(file)) throw new Error('语法校验失败');
       const n = [...hits.values()].reduce((a, b) => a + b, 0);
       total += n;

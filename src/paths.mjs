@@ -10,11 +10,16 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-/** 代码根目录（package.json 所在处）。 */
+/**
+ * 代码根目录（package.json 所在处）。
+ *
+ * 必须用 fileURLToPath 而不是手写 new URL().pathname：
+ * 后者在 Windows 上会得到 "/D:/a/repo/src"，拼出 "D:\D:\a\repo" 这种非法路径。
+ */
 export function packageRoot(moduleUrl) {
-  const dir = path.dirname(new URL(moduleUrl).pathname);
-  return path.resolve(decodeURIComponent(dir), '..');
+  return path.resolve(path.dirname(fileURLToPath(moduleUrl)), '..');
 }
 
 /** 运行期数据目录；可用 CURSOR_ZH_HOME 覆盖（测试与便携安装用）。 */

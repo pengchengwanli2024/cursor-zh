@@ -91,7 +91,9 @@ export async function pickCompatibleVersion(candidate, vscodeVersion) {
 export async function downloadVsix(picked, cacheDir) {
   if (!picked.download) throw new Error('该版本没有可下载的 vsix');
   fs.mkdirSync(cacheDir, { recursive: true });
-  const file = path.join(cacheDir, path.basename(new URL(picked.download).pathname));
+  // 用 path.posix 取文件名：下载 URL 永远是 '/' 分隔，Windows 上 path.basename 处理不了
+  const fileName = path.posix.basename(new URL(picked.download).pathname);
+  const file = path.join(cacheDir, fileName);
   if (fs.existsSync(file) && fs.statSync(file).size > 1024) return file;
   const res = await fetch(picked.download);
   if (!res.ok) throw new Error('下载失败 ' + res.status);
