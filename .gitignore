@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 运行期状态（备份、缓存、安装记录）：放用户目录，不入库
+backup/
+cache/
+state.json

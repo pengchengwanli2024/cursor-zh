@@ -1,0 +1,48 @@
+{
+  "name": "cursor-zh",
+  "version": "1.0.0",
+  "description": "让 Cursor 全界面说中文：语言包 + 静态补丁 + 运行时翻译，支持 macOS / Windows / Linux，可一键还原，不影响 Cursor 升级。",
+  "type": "module",
+  "bin": {
+    "cursor-zh": "src/cli.mjs"
+  },
+  "files": [
+    "src/",
+    "sources/",
+    "build/",
+    "LICENSE",
+    "NOTICE.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node src/cli.mjs",
+    "test": "node --test test/",
+    "lint": "node scripts/lint.mjs"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "keywords": [
+    "cursor",
+    "localization",
+    "chinese",
+    "i18n",
+    "zh-cn",
+    "cursor-ide"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pengchengwanli2024/cursor-zh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pengchengwanli2024/cursor-zh/issues"
+  },
+  "homepage": "https://github.com/pengchengwanli2024/cursor-zh#readme",
+  "os": [
+    "darwin",
+    "win32",
+    "linux"
+  ]
+}

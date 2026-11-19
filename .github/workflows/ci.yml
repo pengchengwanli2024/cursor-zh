@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['18', '20', '22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 版本信息
+        run: node -v && npm -v
+
+      - name: 构建词典
+        run: npm run build
+
+      - name: 单元测试 + 假安装端到端测试
+        run: npm test
+
+      - name: 校验 CLI 自身可执行
+        run: |
+          node src/cli.mjs --version
+          node src/cli.mjs --help
+        shell: bash
+
+      - name: 检查文件语法（Node 的解析器）
+        run: |
+          for f in src/*.mjs src/runtime.js scripts/*.mjs test/*.mjs; do
+            node --check "$f" || exit 1
+          done
+        shell: bash
+
+  package:
+    name: 打包可发布文件
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm run build
+      - name: npm pack（干跑，验证 files 字段）
+        run: npm pack --dry-run
