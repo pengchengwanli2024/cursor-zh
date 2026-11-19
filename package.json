@@ -17,7 +17,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node src/cli.mjs",
-    "test": "node --test test/",
+    "test": "node --test",
     "lint": "node scripts/lint.mjs"
   },
   "engines": {
